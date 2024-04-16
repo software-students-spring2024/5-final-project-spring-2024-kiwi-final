@@ -38,4 +38,4 @@ jobs:
           context: ./machineLearningClient
           file: ./machineLearningClient/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kiwi-swefinal:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kiwi-swefinal:${{ github.sha }}

@@ -38,7 +38,7 @@ jobs:
           context: ./webApp
           file: ./webApp/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kiwi-swefinal:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kiwi-swefinal:${{ github.sha }}
 
   deploy:
     needs: build
