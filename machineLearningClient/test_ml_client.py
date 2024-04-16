@@ -33,10 +33,10 @@ def test_init_app(db, monkeypatch):
         "ml_response": "",
     }
     db.insert_one(user_data)
-    monkeypatch.setattr("app.get_key", lambda: "mock key")
+    monkeypatch.setattr("app2.get_key", lambda: "mock key")
     def mock_predict(user_loc, openai_key):
         return "Mock ML Response"
-    monkeypatch.setattr("app.predict", mock_predict)
+    monkeypatch.setattr("app2.predict", mock_predict)
     with patch('flask.Flask.run') as mock_run:
         init_app(db)
     mock_run.assert_called_once_with(host="0.0.0.0", port=5001)
@@ -54,7 +54,7 @@ def test_ML_client(db, monkeypatch):
     db.insert_one(user_data)
     def mock_predict(user_loc, openai_key):
         return "Mock ML Response"
-    monkeypatch.setattr("app.predict", mock_predict)
+    monkeypatch.setattr("app2.predict", mock_predict)
     app = create_app(db, "mock key")
     app.config["TESTING"] = True
     client = app.test_client()
@@ -75,7 +75,7 @@ def test_ML_client_fail(db, monkeypatch):
     db.insert_one(user_data)
     def mock_predict(user_loc, openai_key):
         return "Mock ML Response"
-    monkeypatch.setattr("app.predict", mock_predict)
+    monkeypatch.setattr("app2.predict", mock_predict)
     app = create_app(db, "mock key")
     app.config["TESTING"] = True
     client = app.test_client()
