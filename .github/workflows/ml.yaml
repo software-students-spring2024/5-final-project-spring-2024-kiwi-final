@@ -33,7 +33,6 @@ jobs:
           PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: docker login -u $USERNAME -p $PASSWORD
       - name: Build
-        context: ./machineLearningClient
         run: docker build ./machineLearningCLient --file Dockerfile --tag nmeng01/kiwi-swefinal:${{ github.sha }}
       - name: Push
         run: docker push nmeng01/kiwi-swefinal:${{ github.sha }}
