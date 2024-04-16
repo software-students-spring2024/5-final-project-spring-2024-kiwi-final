@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+black = "*"
+coverage = "*"
+dill = "*"
+flask = "*"
+flask-cors = "*"
+mongomock = "*"
+openai = "*"
+pylint = "*"
+pymongo = "*"
+pytest = "*"
+requests = "*"
+typing-extensions = "*"
+tomli = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
