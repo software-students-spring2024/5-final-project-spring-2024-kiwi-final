@@ -10,3 +10,4 @@ pymongo
 pytest
 requests
 typing_extensions
+tomli
