@@ -1,8 +1,7 @@
 """Module for testing the main flask app"""
-
 import pytest
 from mongomock import MongoClient
-from webApp.app import create_app
+from app import create_app
 
 
 def test_sanity_check():
