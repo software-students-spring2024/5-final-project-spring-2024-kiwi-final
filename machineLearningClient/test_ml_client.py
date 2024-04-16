@@ -3,7 +3,7 @@ import openai
 from flask import Flask
 from mongomock import MongoClient
 from unittest.mock import patch
-from app import create_app, get_key, init_app
+from app2 import create_app, get_key, init_app
 
 
 def test_sanity_check():
