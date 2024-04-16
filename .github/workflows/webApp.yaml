@@ -21,7 +21,7 @@ jobs:
       - name: Test with pytest
         run: |
           python3 -m pytest
-          
+
   push_docker:
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +40,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}
 
   deploy:
     needs: build
