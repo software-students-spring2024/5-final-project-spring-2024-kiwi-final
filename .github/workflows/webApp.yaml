@@ -38,7 +38,7 @@ jobs:
           context: ./webApp
           file: ./webApp/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/webApp-image:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/webapp-image:latest
 
   deploy:
     needs: build
