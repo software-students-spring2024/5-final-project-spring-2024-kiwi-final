@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  flask_app:
+    build:
+      context: ./webApp
+      dockerfile: Dockerfile
+    command: python -u app.py
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo_db
+    environment:
+      MONGO_URI: "mongodb://mongo_db:27017/mydatabase"
+
+  ml_app:
+    build:
+      context: ./machineLearningClient
+      dockerfile: Dockerfile
+    command: python -u app.py
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongo_db
+    environment:
+      MONGO_URI: "mongodb://mongo_db:27017/mydatabase"
+      OPENAI_API_KEY: "{Insert key here}"
+
+  mongo_db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+  
+
+volumes:
+  mongo_data:
