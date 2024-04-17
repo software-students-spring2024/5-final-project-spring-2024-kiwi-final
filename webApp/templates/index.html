@@ -3,117 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Location</title>
+    <title>Home Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-    <h1>User Location</h1>
-    <p id="location"></p>
-
-
-    <button id="ml_button" disabled=true onclick="fetchUserData()">Get Response</button>
-     <div id='user_local'></div>
-     <ol id='ml_response'></ol>
-    
+    <h1>Traveler's Guide</h1>
+    <h2>Get recommendations for things to do at any location</h2>
+    <div class="home_nav">
+        <h3>Select from the following:</h3>
+        <a href="/locationRecom"><button>Locate Me</button></a>
+        <a href="/searchRecom"><button>Search Location</button></a>
+        <a href="/scheduleRecom"><button>Schedule</button></a>
     </div>
-
-    <script>
-
-        function fetchUserData(){
-            fetch('/get_user')
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                 console.log('User data:', data);
-                 document.getElementById('user_local').innerHTML =data.user.city + " " + data.user.region + " " + data.user.country;
-                 let formatted_ml_response = (data.user.ml_response.split(/(?:1\.|2\.|3\.|4\.|5\.)/));
-                 let response = document.getElementById('ml_response');
-                 response.innerHTML = '';
-                 formatted_ml_response.forEach((item, index) => {
-                    let recom = document.createElement('li');
-                    recom.textContent = item.trim();
-                    if (index > 0) {
-                        response.appendChild(recom);
-                    }
-                });
-            })
-        }
-
-        function addMlPart(){
-            fetch('http://127.0.0.1:5001/ml_result') 
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log('ML Response', data);
-                
-                document.getElementById('ml_button').disabled = false;
-            })
-
-        }
-
-        function sendToServer(lat, long){
-            const url = '/save_location';
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                        latitude: lat,
-                        longitude: long
-                    })
-                };
-
-        fetch(url, requestOptions)
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log('User data saved successfully:', data);
-                addMlPart();
-            })
-                
-        }
-          function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById('location').innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
-
-        async function showPosition(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            
-            sendToServer(latitude, longitude)
-
-            document.getElementById('location').innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-         
-        }
-
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    document.getElementById('location').innerHTML = "User denied the request for Geolocation. Please enable location services.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    document.getElementById('location').innerHTML = "Location information is unavailable. Please check your device's location settings.";
-                    break;
-                case error.TIMEOUT:
-                    document.getElementById('location').innerHTML = "The request to get user location timed out. Please try again later.";
-                    break;
-                case error.UNKNOWN_ERROR:
-                    document.getElementById('location').innerHTML = "An unknown error occurred. Please try again later.";
-                    break;
-            }
-        }
-
-        // Call the getLocation function when the page is loaded
-        window.onload = getLocation;
-    </script>
 </body>
 </html>
