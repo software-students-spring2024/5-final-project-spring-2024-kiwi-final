@@ -13,6 +13,18 @@ def create_app(collection):
     def ping_server():
         """Function for home page"""
         return render_template("index.html")
+    
+    @app.route("/locationRecom")
+    def locateMe():
+        return render_template("locationRecom.html")
+    
+    @app.route("/scheduleRecom")
+    def schedule():
+        return render_template("scheduleRecom.html")
+    
+    @app.route("/searchRecom")
+    def search_location():
+        return render_template("searchRecom.html")
 
     @app.route("/save_location", methods=["POST"])
     def save_location():

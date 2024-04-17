@@ -17,14 +17,14 @@ services:
     build:
       context: ./machineLearningClient
       dockerfile: Dockerfile
-    command: python -u app.py
+    command: python -u app2.py
     ports:
       - "5001:5001"
     depends_on:
       - mongo_db
     environment:
       MONGO_URI: "mongodb://mongo_db:27017/mydatabase"
-      OPENAI_API_KEY: "{Insert key here}"
+      OPENAI_API_KEY: "{Input key here}"
 
   mongo_db:
     image: mongo
