@@ -6,11 +6,12 @@ html, body {
 
 /* Centering content */
 .container {
+    background-color: #E6F0FA;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    padding: 10px;
 }
 
 /* Basic styling */
@@ -20,32 +21,42 @@ body {
 }
 
 h1 {
-    color: #4a148c; 
+    color: #4a148c;
     font-size: 4em;
     text-align: center;
 }
 
 h2 {
-    color: #333; 
+    color: #333;
     font-size: 2em;
     text-align: center;
 }
 
 p {
     color: #333;
-    font-size: 1em;
+    font-size: 25px;
     text-align: center;
 }
 
+input {
+  width: 400px;
+  height: 50px;
+  font-size: 30px;
+  margin: 6px;
+  display: inline-block;
+  text-decoration: none;
+}
+
 button {
-    background-color: #5e35b1; 
+    background-color: #5e35b1;
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    width: 200px;
-    font-size: 20px;
+    width: 300px;
+    height: 50px;
+    font-size: 30px;
     margin: 6px;
     display: inline-block;
     text-decoration: none;
@@ -86,17 +97,6 @@ button:hover {
     color: #333;
 }
 
-/* Container styling */
-.container {
-    background-color: #E6F0FA;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    padding: 10px;
-}
-
 .home_nav {
     text-align: center;
     background-color: #E6F0FA;
@@ -107,6 +107,11 @@ button:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: -1;
+}
+
+.search_box {
+    display: flex;
+    justify-content: center;
 }
 
 /* Responsive styling */

@@ -1,7 +1,7 @@
 """These imports are used create a flask server for the ml part  """
 
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from pymongo import MongoClient
 from flask_cors import cross_origin
 import openai
@@ -12,12 +12,17 @@ def predict(user_loc, openai_key):
     openai.my_api_key = openai_key
     messages = [
         {"role": "system", "content": "You are an intelligent assistant."},
-        {"role": "user", "content": "List the 5 best things to do in " + user_loc},
+        {"role": "user", "content": "Yes or no, is " + user_loc + "a geographic location?"},
     ]
     chat = openai.chat.completions.create(messages=messages, model="gpt-3.5-turbo")
-    if hasattr(chat, "choices"):
+    if "Yes" in chat.choices[0].message.content:
+        messages = [
+            {"role": "system", "content": "You are an intelligent assistant."},
+            {"role": "user", "content": "List the 5 best things to do in " + user_loc},
+        ]
+        chat = openai.chat.completions.create(messages=messages, model="gpt-3.5-turbo")
         return chat.choices[0].message.content
-    return chat
+    return "Not a location"
 
 
 def get_key():
@@ -52,6 +57,14 @@ def create_app(collection, api_key):
             )
             return jsonify({"message": "Ml Response Added"}), 200
         return jsonify({"message": "User not found"}), 404
+    
+    @app.route("/ml_search", methods=["GET"])
+    @cross_origin()
+    def search_location():
+        """Function to get recommendation from a searched location"""
+        loc = request.args.get('loc')
+        response = predict(loc, api_key)
+        return jsonify({"ml_response": response}), 200
 
     return app
 

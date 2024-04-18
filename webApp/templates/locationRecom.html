@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <a href="/"><h1>Traveler's Guide</h1></a>
-    <div class="container">
+    <a href="/" style="text-decoration:none"><h1>Traveler's Guide</h1></a>
     <h2>Your Location</h2>
-    <p id="location"></p>
-    <button id="ml_button" disabled=true onclick="fetchUserData()">Get Response</button>
-    <div id='user_local'></div>
-    <ol id='ml_response'></ol>
+    <div class="container">
+        <p id="location"></p>
+        <button id="ml_button" disabled=true onclick="fetchUserData()">Get Response</button>
+        <div id='user_local' style = "font-size: 25px;"></div>
+        <ol id='ml_response'></ol>
     </div>
     <script>
 
@@ -24,7 +24,7 @@
             })
             .then(data => {
                  console.log('User data:', data);
-                 document.getElementById('user_local').innerHTML =data.user.city + " " + data.user.region + " " + data.user.country;
+                 document.getElementById('user_local').innerHTML =data.user.city + ", " + data.user.region + ", " + data.user.country;
                  let formatted_ml_response = (data.user.ml_response.split(/(?:1\.|2\.|3\.|4\.|5\.)/));
                  let response = document.getElementById('ml_response');
                  response.innerHTML = '';
@@ -45,7 +45,7 @@
             })
             .then(data => {
                 console.log('ML Response', data);
-                
+                document.getElementById('user_local').innerHTML = "";
                 document.getElementById('ml_button').disabled = false;
             })
 
@@ -75,6 +75,7 @@
                 
         }
           function getLocation() {
+            document.getElementById('user_local').innerHTML = "Just a moment...";
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {

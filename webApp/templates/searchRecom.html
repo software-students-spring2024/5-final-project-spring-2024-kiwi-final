@@ -7,6 +7,49 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <a href="/"><h1>Traveler's Guide</h1></a>
+    <a href="/" style="text-decoration:none"><h1>Traveler's Guide</h1></a>
     <h2>Get recommendations for things to do at in a specific place</h2>
+    <div class="container">
+        <div class="search_container">
+          <button onclick="getRecommendations()" style="display:inline; width: 150px;">Search:</button> 
+          <input type="search" id="searchVal" placeholder="Enter a location" style="display:inline;">
+        </div>
+        <div id='place' style = "font-size: 25px;"></div>
+        <div style = "width: 1200px;">
+            <ol id='ml_response'></ol>
+        </div>
+    </div>
+    <script>
+        function getRecommendations() {
+            let s = document.getElementById("searchVal").value;
+            let words = s.split(" ");
+            for (let i = 0; i < words.length; i++) {
+                words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+            }
+            s = words.join(" ");
+            document.getElementById('searchVal').value = '';
+            document.getElementById('place').innerHTML = 'Just a moment...';
+            document.getElementById('ml_response').innerHTML = '';
+            fetch(`http://127.0.0.1:5001/ml_search?loc=${s}`)
+            .then(response => response.json())
+            .then(data => {
+                if(data.ml_response !== "Not a location") {
+                    console.log(data); 
+                    document.getElementById('place').innerHTML = s;
+                    let formatted_ml_response = (data.ml_response.split(/(?:1\.|2\.|3\.|4\.|5\.)/));
+                    let response = document.getElementById('ml_response');
+                    response.innerHTML = '';
+                    formatted_ml_response.forEach((item, index) => {
+                        let recom = document.createElement('li');
+                        recom.textContent = item.trim();
+                        if (index > 0) {
+                            response.appendChild(recom);
+                        }
+                    });
+                }
+                else {
+                    document.getElementById('place').innerHTML = s.concat(" is not a valid geographical location");
+                }
+        })}
+    </script>
 </body>
