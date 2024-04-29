@@ -66,6 +66,25 @@ def create_app(collection, api_key):
         response = predict(loc, api_key)
         return jsonify({"ml_response": response}), 200
 
+
+    @app.route("/ml_sch", methods=["GET"])
+    @cross_origin()
+    def get_sch():
+        """Function to get recommendation from a searched location"""
+        sch = request.args.get('sch')
+
+
+        openai.my_api_key = api_key
+
+        messages = [
+            {"role": "system", "content": "You are an intelligent assistant."},
+            {"role": "user", "content": sch},
+        ]
+        chat = openai.chat.completions.create(messages=messages, model="gpt-3.5-turbo")
+        response = chat.choices[0].message.content
+
+        return jsonify({"ml_response": response}), 200
+
     return app
 
 

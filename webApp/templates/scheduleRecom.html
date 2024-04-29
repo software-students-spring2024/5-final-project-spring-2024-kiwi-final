@@ -1,12 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedule</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Generate Schedule</title>
+     <link rel="stylesheet" href="/static/style.css">
+    <style>
+       
+        .scheduleForm {
+            display: inline-block;
+            text-align: center;
+        }
+    </style>
 </head>
-<body>
+<body style="  text-align: center !important;">
     <a href="/"><h1>Traveler's Guide</h1></a>
     <h2>Input your vacation schedule and get recommendations for things to do on each day</h2>
-</body>
+    
+    <div class="scheduleForm">
+        <label for="length-of-stay">We will go to:</label>
+        <input placeholder="Florida" type="text" id="length-of-stay" name="length_of_stay" required=""><br>
+        
+        <label for="number-of-days">for</label>
+        <input placeholder="5" type="number" id="number-of-days" name="number_of_days" required=""> days<br>
+        
+        <label for="preferences">and some preferences are:</label>
+        <input placeholder="Going to the beach. Swimming. " type="text" id="preferences" name="preferences" required=""><br>
+        
+        <button id="ml_button" onclick="getSch()">Get Response</button>
+
+        <div style="width: 1200px;">
+            <div id="ml_sch">
+        </div>
+    </div>
+
+    <script>
+        function getSch() {
+           
+            var place = document.getElementById('length-of-stay').value ;
+            var days =  document.getElementById('number-of-days').value;
+            var pref = document.getElementById('preferences').value ;
+
+
+            var s = `I am going on a trip to ${place} for ${days}. My preferences are: ${pref}. Make me a detailed bullet point schedule for each day. This should included specific places that would make the overall best trip.Separate each day plan with with string "</end>". `
+
+
+            console.log(s);
+
+             fetch(`http://127.0.0.1:5001/ml_sch?sch=${s}`)
+            .then(response => response.json())
+            .then(data => {
+
+                console.log(data.ml_response);
+                var strArr = data.ml_response.split('</end>');
+
+                var resDiv = document.getElementById('ml_sch');
+
+                for(var currStr of strArr){
+                    var newEl = document.createElement('div');
+                    newEl.innerHTML = currStr;
+                    resDiv.appendChild(newEl);
+                }
+                
+            })
+        }
+           
+    </script>
+
+</body></html>
