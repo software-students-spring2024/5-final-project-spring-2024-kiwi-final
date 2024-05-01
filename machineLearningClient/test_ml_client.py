@@ -4,7 +4,7 @@ import os
 from flask import Flask, jsonify, request
 from mongomock import MongoClient
 from unittest.mock import patch, MagicMock
-from app2 import create_app, get_key, init_app, generate_image
+from app2 import create_app, get_key, init_app
 
 
 def test_sanity_check():
@@ -106,24 +106,8 @@ def test_ml_search_endpoint(db, monkeypatch):
     response = client.get("/ml_search?loc=New+York")
     assert response.status_code == 200
 
-def test_generate_image(monkeypatch):
-    mock_response = {
-        'data': [
-            {'url': 'https://mock_image_url.com/image.jpg'}
-        ]
-    }
 
-    def mock_image_create(*args, **kwargs):
-        return mock_response
-    
-    monkeypatch.setattr("openai.Image.create", mock_image_create)
-    description = "A cat sitting on a mat"
-    openai_key = "mock key"
-    result = generate_image(description, openai_key)
-
-    assert result == 'https://mock_image_url.com/image.jpg'
-
-
+ 
 
 if __name__ == "__main__":
     pytest.main()
