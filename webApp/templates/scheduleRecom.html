@@ -12,7 +12,7 @@
     </style>
 </head>
 <body style="  text-align: center !important;">
-    <a href="/"><h1>Traveler's Guide</h1></a>
+    <a href="/" style="text-decoration:none"><h1>Traveler's Guide</h1></a>
     <h2>Input your vacation schedule and get recommendations for things to do on each day</h2>
     
     <div class="scheduleForm">
@@ -38,7 +38,8 @@
             var place = document.getElementById('length-of-stay').value ;
             var days =  document.getElementById('number-of-days').value;
             var pref = document.getElementById('preferences').value ;
-
+            var resDiv = document.getElementById('ml_sch');
+            resDiv.innerHTML = 'Just a moment...';
 
             var s = `I am going on a trip to ${place} for ${days}. My preferences are: ${pref}. Make me a detailed bullet point schedule for each day. This should included specific places that would make the overall best trip.Separate each day plan with with string "</end>". `
 
@@ -52,7 +53,7 @@
                 console.log(data.ml_response);
                 var strArr = data.ml_response.split('</end>');
 
-                var resDiv = document.getElementById('ml_sch');
+                resDiv.innerHTML = '';
 
                 for(var currStr of strArr){
                     var newEl = document.createElement('div');
