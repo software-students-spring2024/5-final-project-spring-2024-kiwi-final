@@ -49,6 +49,18 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y docker-compose
       - name: Build and Deploy
         run: docker-compose up --build -d
+
+      - name: Get tag name
+        uses: olegtaravsov/get-tag@v2
+      
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{secrets.DIGITALOCEAN_ACCESS_TOKEN}}
+      
+      - name: Provision Droplets and deploy container
+        run: doctl compute droplet create "$GIT_TAG_NAME" --image ubuntu-23-10-x64 --size s-2vcpu-4gb --region nyc3 --user-data-file deploy.sh --wait
+
       - name: Deploy Flask app
         uses: appleboy/ssh-action@master
         with:
