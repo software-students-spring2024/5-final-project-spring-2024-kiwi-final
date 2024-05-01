@@ -1,8 +1,9 @@
 import pytest
 import openai
-from flask import Flask
+import os
+from flask import Flask, jsonify, request
 from mongomock import MongoClient
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from app2 import create_app, get_key, init_app
 
 
@@ -81,3 +82,32 @@ def test_ML_client_fail(db, monkeypatch):
     client = app.test_client()
     response = client.get("/ml_result")
     assert response.status_code == 404
+
+def test_ml_result_endpoint_user_not_found(db, monkeypatch):
+    # No user in the database
+    app = create_app(db, "mock key")
+    app.config["TESTING"] = True
+    client = app.test_client()
+    
+    response = client.get("/ml_result")
+    assert response.status_code == 404
+
+
+def test_ml_search_endpoint(db, monkeypatch):
+    def mock_predict(user_loc, openai_key):
+        return "Mock ML Response"
+    
+    monkeypatch.setattr("app2.predict", mock_predict)
+    
+    app = create_app(db, "mock key")
+    app.config["TESTING"] = True
+    client = app.test_client()
+    
+    response = client.get("/ml_search?loc=New+York")
+    assert response.status_code == 200
+
+
+ 
+
+if __name__ == "__main__":
+    pytest.main()

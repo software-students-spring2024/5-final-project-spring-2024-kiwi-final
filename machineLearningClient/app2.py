@@ -24,19 +24,6 @@ def predict(user_loc, openai_key):
         return chat.choices[0].message.content
     return "Not a location"
 
-def generate_image(description, openai_key):
-    """Generate an image based on description using OpenAI's DALL-E."""
-    response = openai.Image.create(
-        model="image-dalle-2",
-        prompt=description,
-        n=1,
-        size="1024x1024",
-        api_key=openai_key
-    )
-    image_url = response['data'][0]['url']  # This may vary depending on API response structure
-    return image_url
-
-
 def get_key():
     """Function to retreive key from environment"""
     return os.environ.get("OPENAI_API_KEY")
@@ -99,16 +86,6 @@ def create_app(collection, api_key):
 
     return app
 
-    @app.route('/recommend', methods=['GET'])
-    def recommend():
-        user_loc = request.args.get('user_loc', '')
-        openai_key = os.getenv('OPENAI_API_KEY') 
-        description = "Generate an artistic image of a landscape described as: " + user_loc
-        image_url = generate_image(description, openai_key)
-        
-        return jsonify({
-            'image_url': image_url
-        })
 
 
 if __name__ == "__main__":
